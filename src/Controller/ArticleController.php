@@ -8,7 +8,7 @@
 
 namespace App\Controller;
 
-use Michelf\MarkdownInterface;
+use App\Service\MarkdownHelper;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -27,7 +27,7 @@ class ArticleController extends AbstractController
     /**
      * @Route("/news/{slug}", name="article_show")
      */
-    public function show($slug, MarkdownInterface $markdown)
+    public function show($slug, MarkdownHelper $markdownHelper)
     {
         $comments = [
             'settige huere schissdräck!',
@@ -56,7 +56,7 @@ Meatball adipisicing ribeye bacon strip steak eu. Consectetur ham hock pork hamb
 Sausage tenderloin officia jerky nostrud. Laborum elit pastrami non, pig kevin buffalo minim ex quis. Pork belly
  pork chop officia anim. Irure tempor leberkas kevin adipisicing cupidatat qui buffalo ham aliqua pork belly
  exercitation eiusmod. Exercitation incididunt rump laborum, t-bone short ribs buffalo ut shankle pork chop
- bresaola shoulder burgdoggen fugiat. Adipisicing nostrud chicken consequat beef ribs, quis filet mignon do.
+ **bresaola** shoulder burgdoggen fugiat. Adipisicing nostrud chicken consequat beef ribs, quis filet mignon do.
  Prosciutto capicola mollit shankle aliquip do dolore hamburger brisket turducken eu.
 
 Do mollit deserunt prosciutto laborum. Duis sint tongue quis nisi. Capicola qui beef ribs dolore pariatur.
@@ -65,7 +65,9 @@ Do mollit deserunt prosciutto laborum. Duis sint tongue quis nisi. Capicola qui 
  adipisicing cow cillum tenderloin.
 EOF;
 
-        $articleContent = $markdown->transform($articleContent);
+
+
+        $articleContent = $markdownHelper->parse($articleContent);
 
         return $this->render('article/show.html.twig', [
             'title' => ucwords(str_replace('-', ' ', $slug)),
@@ -88,4 +90,4 @@ EOF;
 
         return $this->json(['hearts' => rand(5, 100)]);
     }
-}
+};
