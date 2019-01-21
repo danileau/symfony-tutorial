@@ -19,8 +19,13 @@ class ArticleController extends AbstractController
     /**
      * @Route("/", name="app_homepage")
      */
-    public function homepage() {
-        return $this->render('article/homepage.html.twig');
+    public function homepage(EntityManagerInterface $em) {
+        $repository = $em->getRepository(Article::class);
+        $articles =$repository->findAllPublishedOrderedByNewest();
+
+        return $this->render('article/homepage.html.twig', [
+            'articles' => $articles,
+        ]);
     }
 
     /**
@@ -44,12 +49,6 @@ class ArticleController extends AbstractController
             'wtf?',
         ];
 
-
-
-
-
-
-
         return $this->render('article/show.html.twig', [
             'article' => $article,
             'comments' => $comments,
@@ -59,14 +58,15 @@ class ArticleController extends AbstractController
     /**
      * @route("/news/{slug}/heart", name="article_toggle_heart", methods={"POST"})
      */
-    public function toggleArticleHeart($slug, LoggerInterface $logger)
+    public function toggleArticleHeart(Article $article, LoggerInterface $logger, EntityManagerInterface $em)
     {
-
+        $article->incrementHeartCount();
+        $em->flush();
         //TODO actually heart,unheart the article
 
         //Logeintrag erstellen
         $logger->info('Article has been hearted');
 
-        return $this->json(['hearts' => rand(5, 100)]);
+        return $this->json(['hearts' => $article->getHeartcount()]);
     }
 };

@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\ArticleRepository")
@@ -23,6 +25,7 @@ class Article
 
     /**
      * @ORM\Column(type="string", length=100, unique=true)
+     * @Gedmo\Slug(fields={"title"})
      */
     private $slug;
 
@@ -35,6 +38,21 @@ class Article
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $publishedAt;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $author;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $heartcount = 0;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $imageFilename;
 
     public function getId(): ?int
     {
@@ -100,4 +118,52 @@ class Article
 
         return $this;
     }
+
+    public function getAuthor(): ?string
+    {
+        return $this->author;
+    }
+
+    public function setAuthor(string $author): self
+    {
+        $this->author = $author;
+
+        return $this;
+    }
+
+    public function getHeartcount(): ?int
+    {
+        return $this->heartcount;
+    }
+
+    public function setHeartcount(int $heartcount): self
+    {
+        $this->heartcount = $heartcount;
+
+        return $this;
+    }
+
+    public function getImageFilename(): ?string
+    {
+        return $this->imageFilename;
+    }
+
+    public function setImageFilename(string $imageFilename): self
+    {
+        $this->imageFilename = $imageFilename;
+
+        return $this;
+    }
+    public function getImagePath()
+    {
+        return 'images/'.$this->getImageFilename();
+    }
+
+    public function incrementHeartCount(): self
+    {
+        $this->heartcount = $this->heartcount +1;
+
+        return $this;
+    }
+
 }
