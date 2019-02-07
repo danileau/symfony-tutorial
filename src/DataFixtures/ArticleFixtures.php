@@ -4,7 +4,6 @@ namespace App\DataFixtures;
 
 use App\Entity\Article;
 use App\Entity\Comment;
-use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 
 class ArticleFixtures extends BaseFixtures
@@ -32,7 +31,7 @@ class ArticleFixtures extends BaseFixtures
 
     protected function loadData(ObjectManager $manager)
     {
-        $this->createMany(Article::class, 50, function(Article $article, $count) use ($manager){
+        $this->createMany(Article::class, 10, function(Article $article, $count) use ($manager){
             $article->setTitle($this->faker->randomElement(self::$articleTitles))
                 ->setContent(<<<EOF
 Spicy **jalapeno bacon** ipsum dolor amet veniam shank in dolore. Ham hock nisi landjaeger cow,
@@ -80,7 +79,7 @@ EOF
             $manager->persist($comment1);
 
             $comment2 = new Comment();
-            $comment2->setAuthorName('sandro sommermatt');
+            $comment2->setAuthorName('Sandro Sommermatt');
             $comment2->setContent('Wow hennä guet!');
             $comment2->setArticle($article);
             $manager->persist($comment2);

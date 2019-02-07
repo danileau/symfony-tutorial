@@ -65,6 +65,9 @@ class Article
     public function __construct()
     {
         $this->comments = new ArrayCollection();
+        $this->setCreatedAt(new \DateTime());
+        $this->setPublishedAt(new \DateTime());
+        $this->setUpdatedAt(new \DateTime());
     }
 
     public function getId(): ?int
@@ -104,18 +107,6 @@ class Article
     public function setContent(?string $content): self
     {
         $this->content = $content;
-
-        return $this;
-    }
-
-    public function getPublished(): ?string
-    {
-        return $this->published;
-    }
-
-    public function setPublished(string $published): self
-    {
-        $this->published = $published;
 
         return $this;
     }
