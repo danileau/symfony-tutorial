@@ -9,6 +9,8 @@
 namespace App\Controller;
 
 use App\Entity\Article;
+use App\Entity\Comment;
+use App\Repository\CommentRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -31,27 +33,15 @@ class ArticleController extends AbstractController
     /**
      * @Route("/news/{slug}", name="article_show")
      */
-    public function show($slug, EntityManagerInterface $em)
+    public function show(Article $article)
     {
 
-        $repository = $em->getRepository(Article::class);
-        /** @var Article $article */
-        $article = $repository->findOneBy(['slug' => $slug]);
-
-        if (!$article) {
-            throw $this->createNotFoundException(sprintf('no article with the slug "%s" found', $slug));
-        }
+        $comments = $article->getComments();
 
 
-        $comments = [
-            'settige huere schissdräck!',
-            'wow hönne guet',
-            'wtf?',
-        ];
 
         return $this->render('article/show.html.twig', [
             'article' => $article,
-            'comments' => $comments,
         ]);
     }
 
