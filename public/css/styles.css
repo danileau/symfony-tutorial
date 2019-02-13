@@ -170,6 +170,11 @@ html {height:100%}
     background-color: #fff;
 }
 
+.show-article-container-border-green {
+    border-top: 3px solid green;
+    border-radius: 3px;
+}
+
 .show-article-img {
     width: 250px;
     height: auto;
