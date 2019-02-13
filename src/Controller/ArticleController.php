@@ -9,8 +9,6 @@
 namespace App\Controller;
 
 use App\Entity\Article;
-use App\Entity\Comment;
-use App\Repository\CommentRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
